@@ -26,6 +26,15 @@ enabling faster identification of recurring pain points and data-driven prioriti
 7. **Document Assignment**: Assigned each ticket to its highest-probability topic for downstream analysis
 8. **Category Deep Dive**: Drilled into sub-category trends for delivery, event, and refund complaints
 
+## Input data
+
+The notebook uses Google Colab's file picker. Supply an authorized UTF-8 CSV named `CIC_VOC_202202_202302.csv`; the original company data is not included.
+
+- The first CSV column is read as the index. The remaining columns must include `TicketID`, `ConsultCategory`, `CategoryL1`, `CategoryL2`, and `Content`.
+- `TicketID` must begin with a valid `YYYYMMDD` date. Date, year, month, and week fields are derived from that prefix.
+- Set `target_category` to a value present in `CategoryL1`. Rows with missing content or fewer than three unique tokens after tokenization are excluded.
+- With `min_df=2` and `max_df=0.1`, at least 20 documents must survive filtering. This alone does not guarantee a vocabulary: terms must occur in at least two and at most 10% of those documents. For a smaller sample, review the vectorizer thresholds before fitting LDA.
+
 ## Tech Stack
 - Python, KoNLPy (Okt morphological analyzer)
 - Scikit-learn (CountVectorizer, LatentDirichletAllocation)
